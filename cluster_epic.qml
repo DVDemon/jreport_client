@@ -13,6 +13,10 @@ Page {
     property bool saved: false
 
 
+    Rectangle{
+        anchors.fill: parent
+        color: "black"
+    }
 
     ListModel {
         id: issue1_model
@@ -51,7 +55,7 @@ Page {
                     color: "white"
                     font.family: "Hack"
                     font.bold: false
-                    font.pointSize: 12
+                    font.pointSize: font_size
                     font.underline: true
                     width:100
                     wrapMode: Text.WrapAnywhere
@@ -68,7 +72,7 @@ Page {
                     color: "white"
                     font.family: "Hack"
                     font.bold: false
-                    font.pointSize: 12
+                    font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                 }
             }
@@ -108,7 +112,7 @@ Page {
                 color: "white"
                 font.family: "Hack"
                 font.bold: true
-                font.pointSize: 14
+                font.pointSize: font_size
                 wrapMode: Text.WrapAnywhere
             }
 
@@ -144,7 +148,7 @@ Page {
                         font.family: "Hack"
                         font.bold: true
                         font.underline: true
-                        font.pointSize: 14
+                        font.pointSize: font_size
                         wrapMode: Text.WrapAnywhere
                     }
 
@@ -177,7 +181,7 @@ Page {
                         font.family: "Hack"
                         font.bold: true
                         font.underline: true
-                        font.pointSize: 14
+                        font.pointSize: font_size
                         wrapMode: Text.WrapAnywhere
                     }
 
@@ -211,7 +215,7 @@ Page {
     function setClusterInitiativeEpic(){
 
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://192.168.64.6/cluster_initative_epic", true);
+        xhr.open("POST", host+'/cluster_initative_epic', true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
         xhr.send(JSON.stringify({
@@ -226,7 +230,7 @@ Page {
     function getClusterInitiativeEpic() {
         var request = new XMLHttpRequest()
         selected_issue =""
-        var uri = 'http://192.168.64.6/cluster_initative_epic?';
+        var uri = host+'/cluster_initative_epic?';
         uri += 'cluster='+encodeURIComponent(selected_cluster);
         uri += '&initiative='+encodeURIComponent(selected_initiative);
         uri += '&initiative_issue='+encodeURIComponent(selected_initiative_epic);
@@ -251,7 +255,7 @@ Page {
     function getIssuesJSON() {
         var request = new XMLHttpRequest()
 
-        request.open('GET', 'http://192.168.64.6/issue/'+selected_initiative_epic, true);
+        request.open('GET', host+'/issue/'+selected_initiative_epic, true);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {

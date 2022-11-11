@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.0
 import QtQuick.Window 2.0
-import QtQuick.Shapes 1.2
+
 
 
 ApplicationWindow {
@@ -17,6 +17,8 @@ ApplicationWindow {
     property string selected_initiative_epic : ""
     property string selected_product: ""
     property string selected_issue: ""
+    property int font_size: 10
+    property string host : "http://localhost"
 
 
 

@@ -12,6 +12,11 @@ Page {
 
     property bool saved: false
 
+    Rectangle{
+        anchors.fill: parent
+        color: "black"
+    }
+
 
     ListModel {
         id: product_model
@@ -51,7 +56,7 @@ Page {
                     color: "white"
                     font.family: "Hack"
                     font.bold: false
-                    font.pointSize: 12
+                    font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                 }
 
@@ -61,7 +66,7 @@ Page {
                     color: "white"
                     font.family: "Hack"
                     font.bold: false
-                    font.pointSize: 12
+                    font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                 }
 
@@ -123,7 +128,7 @@ Page {
                     font.family: "Hack"
                     font.bold: true
                     font.underline: true
-                    font.pointSize: 14
+                    font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                 }
 
@@ -158,7 +163,7 @@ Page {
     function getProductsJSON() {
         var request = new XMLHttpRequest()
 
-        var uri = 'http://192.168.64.6/products?';
+        var uri = host+'/products?';
         uri += 'cluster='+encodeURIComponent(selected_cluster);
         uri += '&cluster_issue='+encodeURIComponent(selected_initiative_epic);
 

@@ -2,15 +2,15 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QFontDatabase>
-#include <QtWebView>
+//#include <QtWebView>
 #include <QQuickWindow>
 #include <QSGRendererInterface>
 
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts );
-    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
+//    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts );
+ //   QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
 
     QApplication app(argc, argv);
     QQmlApplicationEngine engine;
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     QFontDatabase::addApplicationFont(":/fonts/Hack-Italic.ttf");
     QFontDatabase::addApplicationFont(":/fonts/Hack-Regular.ttf");
 
-    const QUrl url(u"qrc:/main.qml"_qs);
+    const QUrl url("qrc:/main.qml");
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)

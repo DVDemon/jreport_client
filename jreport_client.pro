@@ -1,4 +1,4 @@
-QT += quick network widgets charts webview core5compat
+QT += quick network widgets
 
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17

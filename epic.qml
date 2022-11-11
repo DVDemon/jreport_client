@@ -12,6 +12,10 @@ Page {
     property string selected_product_issue: ""
     property bool saved: false
 
+    Rectangle{
+        anchors.fill: parent
+        color: "black"
+    }
 
 
     ListModel {
@@ -186,7 +190,7 @@ Page {
 
     function getProductEpic(product_issue) {
         var request = new XMLHttpRequest()
-        var uri = 'http://192.168.64.6/product_initative_epic?';
+        var uri = host+'/product_initative_epic?';
         uri += 'product_issue='+encodeURIComponent(product_issue);
         uri += '&cluster_issue='+encodeURIComponent(selected_initiative_epic);
 
@@ -211,7 +215,7 @@ Page {
     function setProductEpic(){
 
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://192.168.64.6/product_initative_issue", true);
+        xhr.open("POST", host+'product_initative_issue', true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
         xhr.send(JSON.stringify({
@@ -226,7 +230,7 @@ Page {
         var request = new XMLHttpRequest()
 
         console.log("loading issue: "+selected_issue);
-        request.open('GET', 'http://192.168.64.6/issue/'+selected_issue, true);
+        request.open('GET', host+'/issue/'+selected_issue, true);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {

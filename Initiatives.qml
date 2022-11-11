@@ -12,6 +12,10 @@ Page {
 
 
 
+    Rectangle{
+        anchors.fill: parent
+        color: "black"
+    }
 
 
     ListModel {
@@ -60,7 +64,7 @@ Page {
                     color: "white"
                     font.family: "Hack"
                     font.bold: true
-                    font.pointSize: 12
+                    font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                 }
                 Rectangle{
@@ -76,7 +80,7 @@ Page {
                     font.family: "Hack"
                     font.bold: true
                     font.underline: true
-                    font.pointSize: 12
+                    font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                     MouseArea{
                         anchors.fill: parent
@@ -108,7 +112,7 @@ Page {
                     font.family: "Hack"
                     font.underline: true
                     font.bold: true
-                    font.pointSize: 12
+                    font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                     MouseArea{
                         anchors.fill: parent
@@ -155,7 +159,7 @@ Page {
                     color: "white"
                     font.family: "Hack"
                     font.bold: true
-                    font.pointSize: 12
+                    font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                 }
             }
@@ -182,6 +186,7 @@ Page {
             width: parent.width
             spacing: control_spacing
 
+
             Rectangle{
                 width: control_spacing
                 height: control_spacing
@@ -194,7 +199,7 @@ Page {
                 color: "white"
                 font.family: "Hack"
                 font.bold: true
-                font.pointSize: 12
+                font.pointSize: font_size
                 wrapMode: Text.WrapAnywhere
             }
 
@@ -219,7 +224,7 @@ Page {
                 color: "white"
                 font.family: "Hack"
                 font.bold: true
-                font.pointSize: 12
+                font.pointSize: font_size
                 wrapMode: Text.WrapAnywhere
             }
             ListView {
@@ -259,7 +264,7 @@ Page {
                         font.family: "Hack"
                         font.bold: true
                         font.underline: true
-                        font.pointSize: 14
+                        font.pointSize: font_size
                         visible: text!==''
                         wrapMode: Text.WrapAnywhere
                     }
@@ -292,7 +297,7 @@ Page {
                         font.family: "Hack"
                         font.bold: true
                         font.underline: true
-                        font.pointSize: 14
+                        font.pointSize: font_size
                         visible: text!==''
                         wrapMode: Text.WrapAnywhere
                     }
@@ -325,7 +330,7 @@ Page {
                         font.family: "Hack"
                         font.bold: true
                         font.underline: true
-                        font.pointSize: 14
+                        font.pointSize: font_size
                         visible: text!==''
                         wrapMode: Text.WrapAnywhere
                     }
@@ -362,7 +367,7 @@ Page {
 
     function getInitiativesJSON() {
         var request = new XMLHttpRequest()
-        request.open('GET', 'http://192.168.64.6/initiatives', true);
+        request.open('GET', host+'/initiatives', true);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {
@@ -390,7 +395,7 @@ Page {
 
     function getClustersJSON() {
         var request = new XMLHttpRequest()
-        request.open('GET', 'http://192.168.64.6/clusters', true);
+        request.open('GET', host+'/clusters', true);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {
