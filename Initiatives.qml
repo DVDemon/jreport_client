@@ -368,6 +368,7 @@ Page {
     function getInitiativesJSON() {
         var request = new XMLHttpRequest()
         request.open('GET', host+'/initiatives', true);
+        request.setRequestHeader("Authorization", identity);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {
@@ -396,6 +397,7 @@ Page {
     function getClustersJSON() {
         var request = new XMLHttpRequest()
         request.open('GET', host+'/clusters', true);
+        request.setRequestHeader("Authorization", identity);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {

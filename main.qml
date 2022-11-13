@@ -19,7 +19,9 @@ ApplicationWindow {
     property string selected_issue: ""
     property int font_size: 10
     property string host : "http://localhost"
-
+    property string user : ""
+    property string password : ""
+    property string identity : ""
 
 
     function stack_view_push(item){
@@ -211,7 +213,7 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        initialItem: "Initiatives.qml"
+        initialItem: "login.qml"
         anchors.fill: parent
 
     }

@@ -196,6 +196,7 @@ Page {
 
         var result_issue = ""
         request.open('GET', uri, false);
+        request.setRequestHeader("Authorization", identity);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {
@@ -217,7 +218,7 @@ Page {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", host+'product_initative_issue', true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-
+        xhr.setRequestHeader("Authorization", identity);
         xhr.send(JSON.stringify({
             product: selected_product,
             cluster_issue: selected_initiative_epic,
@@ -231,6 +232,7 @@ Page {
 
         console.log("loading issue: "+selected_issue);
         request.open('GET', host+'/issue/'+selected_issue, true);
+        request.setRequestHeader("Authorization", identity);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {

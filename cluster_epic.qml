@@ -217,7 +217,7 @@ Page {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", host+'/cluster_initative_epic', true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-
+        xhr.setRequestHeader("Authorization", identity);
         xhr.send(JSON.stringify({
             cluster: selected_cluster,
             initiative: selected_initiative,
@@ -236,6 +236,7 @@ Page {
         uri += '&initiative_issue='+encodeURIComponent(selected_initiative_epic);
 
         request.open('GET', uri, true);
+        request.setRequestHeader("Authorization", identity);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {
@@ -256,6 +257,7 @@ Page {
         var request = new XMLHttpRequest()
 
         request.open('GET', host+'/issue/'+selected_initiative_epic, true);
+        request.setRequestHeader("Authorization", identity);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {

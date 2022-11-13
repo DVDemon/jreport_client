@@ -169,6 +169,7 @@ Page {
 
         console.log(uri);
         request.open('GET', uri, true);
+        request.setRequestHeader("Authorization", identity);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {
