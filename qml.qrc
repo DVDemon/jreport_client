@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
         <file>fonts/CorpidE1SCd_Bold.ttf</file>
         <file>fonts/CorpidE1SCd_Light.ttf</file>
         <file>fonts/CorpidE1SCd_Regular.ttf</file>
@@ -56,5 +55,6 @@
         <file>product_epic.qml</file>
         <file>epic.qml</file>
         <file>login.qml</file>
+        <file>main.qml</file>
     </qresource>
 </RCC>

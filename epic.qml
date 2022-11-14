@@ -153,7 +153,7 @@ Page {
                         font.family: "Hack"
                         font.bold: true
                         font.underline: true
-                        font.pointSize: 14
+                        font.pointSize: 12
                         wrapMode: Text.WrapAnywhere
                     }
 
@@ -214,9 +214,9 @@ Page {
     }
 
     function setProductEpic(){
-
+        console.log("set product initiative issue");
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", host+'product_initative_issue', true);
+        xhr.open("POST", host+'/product_initative_issue', true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         xhr.setRequestHeader("Authorization", identity);
         xhr.send(JSON.stringify({
