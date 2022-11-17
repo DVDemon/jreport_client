@@ -5,16 +5,12 @@ Page {
     id: page_id
     title: qsTr(selected_initiative+" для продукта "+selected_product)
     property string title_image: "images/settings.png"
-
-    property int border_margin :5
-    property int control_spacing: 10
-    property int image_size: 32
     property string selected_product_issue: ""
     property bool saved: false
 
     Rectangle{
         anchors.fill: parent
-        color: "black"
+        color: background_color
     }
 
 
@@ -43,8 +39,8 @@ Page {
             }
 
             Row{
-                x:10
-                y:10
+                x:control_spacing
+                y:control_spacing
                 spacing: control_spacing
                 width: parent.width
                 id:main_row
@@ -52,10 +48,10 @@ Page {
                 Text {
                     id: id_key
                     text: key
-                    color: "white"
+                    color: font_color
                     font.family: "Hack"
                     font.bold: false
-                    font.pointSize: 12
+                    font.pointSize: font_size
                     font.underline: true
                     width:100
                     wrapMode: Text.WrapAnywhere
@@ -70,10 +66,10 @@ Page {
                 Text {
                     id: id_product_epic
                     text: getProductEpic(key)
-                    color: "white"
+                    color: font_color
                     font.family: "Hack"
                     font.bold: false
-                    font.pointSize: 12
+                    font.pointSize: font_size
                     width: 200
                     wrapMode: Text.WrapAnywhere
                 }
@@ -84,7 +80,7 @@ Page {
                     color: "white"
                     font.family: "Hack"
                     font.bold: false
-                    font.pointSize: 12
+                    font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                 }
 
@@ -96,86 +92,96 @@ Page {
 
     }
 
-    Flickable{
+    Column{
+        width: parent.width
+        height: parent.height
 
-        width:page_id.width
-        height:page_id.height
-        contentWidth: page_id.width
-        contentHeight: id_column_lists.height
-        boundsBehavior: Flickable.StopAtBounds
-
-
-        ScrollBar.vertical: ScrollBar {
-            visible: true
-            active: true
-        }
-        Column{
-            id: id_column_lists
+        Row{
+            x:control_spacing
+            y:control_spacing
+            id: control_row_id
             width: parent.width
-            spacing: control_spacing
+            height: id_button.implicitHeight+control_spacing*2
 
             Rectangle{
-                width: control_spacing
-                height: control_spacing
-                color: "transparent"
-            }
-
-
-            ListView {
-                id: id_issue_list
-                height: id_issue_list.contentHeight
-                width: parent.width
-                model: issue1_model
-                delegate: issue_delegate
-            }
-
-            Row{
-                width: parent.width
+                width: id_button.width+control_spacing*2
                 height: id_button.implicitHeight+control_spacing*2
+                visible: (selected_product_issue!=='')
+                color: "transparent"
+                radius: control_spacing
 
-                Rectangle{
-                    width: id_button.width+control_spacing*2
-                    height: id_button.implicitHeight+control_spacing*2
-                    visible: (selected_product_issue!=='')
-                    color: "transparent"
-
-
-                    border{
-                        width: 1
-                        color: "lightgray"
-                    }
-                    Text {
-                        id:id_button
-                        x:control_spacing
-                        y:control_spacing
-                        text: "Save >>"
-                        color: "lightblue"
-                        font.family: "Hack"
-                        font.bold: true
-                        font.underline: true
-                        font.pointSize: 12
-                        wrapMode: Text.WrapAnywhere
-                    }
+                border{
+                    width: 1
+                    color: "lightgray"
+                }
+                Text {
+                    id:id_button
+                    x:control_spacing
+                    y:control_spacing
+                    text: "Save >>"
+                    color: font_color
+                    font.family: "Hack"
+                    font.bold: true
+                    font.underline: true
+                    font.pointSize: font_size
+                    wrapMode: Text.WrapAnywhere
+                }
 
 
 
-                    MouseArea{
-                        anchors.fill: parent
-                        onClicked: {
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
                         setProductEpic()
-                        }
                     }
-
                 }
 
             }
-            Rectangle{
-                width: control_spacing
-                height: control_spacing
-                color: "transparent"
+
+        }
+        Rectangle{
+            width: control_spacing
+            height: control_spacing
+            color: "transparent"
+        }
+        Flickable{
+
+            width:page_id.width
+            height:page_id.height-control_row_id.height-control_spacing*2
+            contentWidth: page_id.width
+            contentHeight: id_column_lists.height
+            boundsBehavior: Flickable.StopAtBounds
+            clip: true
+
+
+            ScrollBar.vertical: ScrollBar {
+                visible: true
+                active: true
             }
+            Column{
+                id: id_column_lists
+                width: parent.width
+                spacing: control_spacing
+
+                Rectangle{
+                    width: control_spacing
+                    height: control_spacing
+                    color: "transparent"
+                }
 
 
+                ListView {
+                    id: id_issue_list
+                    height: id_issue_list.contentHeight
+                    width: parent.width
+                    model: issue1_model
+                    delegate: issue_delegate
+                }
+
+
+
+
+            }
         }
     }
 
@@ -220,10 +226,10 @@ Page {
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         xhr.setRequestHeader("Authorization", identity);
         xhr.send(JSON.stringify({
-            product: selected_product,
-            cluster_issue: selected_initiative_epic,
-            product_issue: selected_product_issue
-        }));
+                                    product: selected_product,
+                                    cluster_issue: selected_initiative_epic,
+                                    product_issue: selected_product_issue
+                                }));
         saved = true;
     }
 

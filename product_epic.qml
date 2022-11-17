@@ -5,16 +5,11 @@ Page {
     id: page_id
     title: qsTr("Продукты "+selected_initiative+" кластера "+selected_cluster+" epic "+selected_issue)
     property string title_image: "images/settings.png"
-
-    property int border_margin :5
-    property int control_spacing: 10
-    property int image_size: 32
-
     property bool saved: false
 
     Rectangle{
         anchors.fill: parent
-        color: "black"
+        color: backgroud_color
     }
 
 
@@ -43,8 +38,8 @@ Page {
             }
 
             Row{
-                x:10
-                y:10
+                x:control_spacing
+                y:control_spacing
                 spacing: control_spacing
                 width: parent.width
                 id:main_row
@@ -52,8 +47,8 @@ Page {
                 Text {
                     id: id_issue
                     text: issue
-                    width: 100
-                    color: "white"
+                    width: 150
+                    color: font_color
                     font.family: "Hack"
                     font.bold: false
                     font.pointSize: font_size
@@ -63,7 +58,7 @@ Page {
                 Text {
                     id: id_name
                     text: name
-                    color: "white"
+                    color: font_color
                     font.family: "Hack"
                     font.bold: false
                     font.pointSize: font_size
@@ -76,58 +71,36 @@ Page {
 
     }
 
-    Flickable{
+    Column{
+        width: parent.width
+        height: parent.height
 
-        width:page_id.width
-        height:page_id.height
-        contentWidth: page_id.width
-        contentHeight: id_column_lists.height
-        boundsBehavior: Flickable.StopAtBounds
-
-
-        ScrollBar.vertical: ScrollBar {
-            visible: true
-            active: true
-        }
-        Column{
-            id: id_column_lists
+        Row{
+            x:control_spacing
+            y:control_spacing
+            id: control_row_id
             width: parent.width
-            spacing: control_spacing
-
+            height: id_button.height+control_spacing*2
             Rectangle{
-                width: control_spacing
-                height: control_spacing
-                color: "transparent"
-            }
-
-            ListView {
-                id: id_product_list
-                height: id_product_list.contentHeight
-                width: parent.width
-                model: product_model
-                delegate: product_delegate
-            }
-
-            Rectangle{
-                width: parent.width
+                width: id_button.implicitWidth+control_spacing*2
                 height: id_button.implicitHeight+control_spacing*2
                 visible: (selected_product!=='')
                 color: "transparent"
-
+                radius: control_spacing
 
                 border{
                     width: 1
                     color: "lightgray"
                 }
+
                 Text {
                     id:id_button
                     x:control_spacing
                     y:control_spacing
                     text: "Select Epic >>"
-                    color: "lightblue"
+                    color: font_color
                     font.family: "Hack"
                     font.bold: true
-                    font.underline: true
                     font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                 }
@@ -140,16 +113,52 @@ Page {
                 }
 
             }
-            Rectangle{
-                width: control_spacing
-                height: control_spacing
-                color: "transparent"
-            }
-
-
         }
-    }
+        Rectangle{
+            width: control_spacing
+            height: control_spacing
+            color: "transparent"
+        }
 
+        Flickable{
+
+            width:page_id.width
+            height:page_id.height-control_row_id.height-control_spacing*2
+            contentWidth: page_id.width
+            contentHeight: id_column_lists.height
+            boundsBehavior: Flickable.StopAtBounds
+
+
+            ScrollBar.vertical: ScrollBar {
+                visible: true
+                active: true
+            }
+            Column{
+                id: id_column_lists
+                width: parent.width
+                spacing: control_spacing
+
+                Rectangle{
+                    width: control_spacing
+                    height: control_spacing
+                    color: "transparent"
+                }
+
+                ListView {
+                    id: id_product_list
+                    height: id_product_list.contentHeight
+                    width: parent.width
+                    model: product_model
+                    delegate: product_delegate
+                }
+
+
+
+
+            }
+        }
+
+    }
     Component.onCompleted: {
         getProductsJSON()
     }
@@ -178,7 +187,7 @@ Page {
                     var length = result.length;
 
                     for (var i = 0; i < length; i++){
-                            product_model.append({"name":result[i].name,"issue":result[i].issue})
+                        product_model.append({"name":result[i].name,"issue":result[i].issue})
                     }
 
                 } else {

@@ -12,12 +12,18 @@ ApplicationWindow {
     title: qsTr("jreport")
 
     property int    image_size : 32
+    property string background_color : "white"
+    property string font_color : "black"
+    property int    font_size: 10
+    property int    border_margin :5
+    property int    control_spacing: 10
+
     property string selected_initiative : ""
     property string selected_cluster : ""
     property string selected_initiative_epic : ""
     property string selected_product: ""
     property string selected_issue: ""
-    property int font_size: 10
+
     property string host : "http://localhost"
     property string user : ""
     property string password : ""

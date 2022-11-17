@@ -3,19 +3,8 @@ QT += quick network widgets
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
 
-SOURCES += \
-        main.cpp
-
-resources.files = main.qml 
-resources.prefix = /$${TARGET}
-RESOURCES += resources \
-    qml.qrc
-
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
-
-# Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH =
+SOURCES += main.cpp
+RESOURCES += qml.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

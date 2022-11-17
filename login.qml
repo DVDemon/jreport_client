@@ -6,19 +6,14 @@ Page {
     title: qsTr("Настройки")
     property string title_image: "images/settings.png"
 
-    property int border_margin :5
-    property int control_spacing: 10
-    property int image_size: 32
+
 
 
 
     Rectangle{
         anchors.fill: parent
-        color: "black"
+        color: background_color
     }
-
-
-
 
     Flickable{
 
@@ -30,8 +25,8 @@ Page {
 
 
         ScrollBar.vertical: ScrollBar {
-            visible: true
-            active: true
+            visible: false
+            active: false
         }
         Column{
             id: id_column_lists
@@ -48,7 +43,7 @@ Page {
             Text {
                 x:control_spacing
                 text: "Адрес сервера"
-                color: "white"
+                color: font_color
                 font.family: "Hack"
                 font.bold: true
                 font.pointSize: font_size
@@ -58,7 +53,8 @@ Page {
             TextField{
                 x: control_spacing
                 text: host
-                width: parent.width
+                color: font_color
+                width: parent.width-control_spacing*2
                 onTextChanged: host = text
             }
 
@@ -71,7 +67,7 @@ Page {
             Text {
                 x:control_spacing
                 text: "User name"
-                color: "white"
+                color: font_color
                 font.family: "Hack"
                 font.bold: true
                 font.pointSize: font_size
@@ -80,8 +76,9 @@ Page {
 
             TextField{
                 x: control_spacing
+                color: font_color
                 text: user
-                width: parent.width
+                width: parent.width-control_spacing*2
                 onTextChanged: user = text
             }
 
@@ -94,7 +91,7 @@ Page {
             Text {
                 x:control_spacing
                 text: "Password"
-                color: "white"
+                color: font_color
                 font.family: "Hack"
                 font.bold: true
                 font.pointSize: font_size
@@ -104,7 +101,8 @@ Page {
             TextField{
                 x: control_spacing
                 text: password
-                width: parent.width
+                width: parent.width-control_spacing*2
+                color: font_color
                 echoMode: TextInput.Password
                 onTextChanged: password = text
             }
@@ -118,24 +116,26 @@ Page {
 
             Rectangle{
                 x:control_spacing
-                width: parent.width-control_spacing*2
+                width: id_button.width+control_spacing*2
                 height: id_button.implicitHeight+control_spacing*2
                 color: "transparent"
+                radius: control_spacing
+
 
 
                 border{
                     width: 1
                     color: "lightgray"
+
                 }
                 Text {
                     id:id_button
                     x:control_spacing
                     y:control_spacing
                     text: "Login >>"
-                    color: "lightblue"
+                    color: font_color
                     font.family: "Hack"
                     font.bold: true
-                    font.underline: true
                     font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                 }
