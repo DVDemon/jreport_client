@@ -24,7 +24,7 @@ ApplicationWindow {
     property string selected_product: ""
     property string selected_issue: ""
 
-    property string host : "http://localhost"
+    property string host : "http://192.168.64.6"
     property string user : ""
     property string password : ""
     property string identity : ""

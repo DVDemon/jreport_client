@@ -23,7 +23,7 @@ Page {
         Rectangle{
             width:parent.width
             height: main_row.implicitHeight+control_spacing*2
-            color: (key==selected_product_issue)?(saved?"darkgreen":"darkgray"):"transparent"
+            color: (key==selected_product_issue)?(saved?"lightgreen":"darkgray"):"transparent"
 
             border{
                 width: 1
@@ -77,7 +77,7 @@ Page {
                 Text {
                     id: id_name
                     text: name
-                    color: "white"
+                    color: font_color
                     font.family: "Hack"
                     font.bold: false
                     font.pointSize: font_size
@@ -99,6 +99,7 @@ Page {
         Row{
             x:control_spacing
             y:control_spacing
+            spacing: control_spacing
             id: control_row_id
             width: parent.width
             height: id_button.implicitHeight+control_spacing*2
@@ -225,6 +226,17 @@ Page {
         xhr.open("POST", host+'/product_initative_issue', true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         xhr.setRequestHeader("Authorization", identity);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status && xhr.status === 200) {
+
+                    stackView.pop();
+                } else {
+                    console.log("HTTP:", xhr.status, xhr.statusText)
+                }
+            }
+
+        }
         xhr.send(JSON.stringify({
                                     product: selected_product,
                                     cluster_issue: selected_initiative_epic,

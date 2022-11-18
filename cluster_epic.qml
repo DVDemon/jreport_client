@@ -23,7 +23,7 @@ Page {
         Rectangle{
             width:parent.width
             height: main_row.implicitHeight+control_spacing*2
-            color: (key==selected_issue)?(saved?"darkgreen":"darkgray"):"transparent"
+            color: (key==selected_issue)?(saved?"lightgreen":"darkgray"):"transparent"
 
             border{
                 width: 1
@@ -85,6 +85,7 @@ Page {
         Row{
             x:control_spacing
             y:control_spacing
+            spacing: control_spacing
             id: control_row_id
             width: parent.width
             height: id_button.implicitHeight+control_spacing*2
