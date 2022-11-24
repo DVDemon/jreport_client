@@ -55,6 +55,7 @@ Page {
                 text: host
                 color: font_color
                 width: parent.width-control_spacing*2
+                selectByMouse: true
                 onTextChanged: host = text
             }
 
@@ -79,6 +80,7 @@ Page {
                 color: font_color
                 text: user
                 width: parent.width-control_spacing*2
+                selectByMouse: true
                 onTextChanged: user = text
             }
 
@@ -104,6 +106,7 @@ Page {
                 width: parent.width-control_spacing*2
                 color: font_color
                 echoMode: TextInput.Password
+                selectByMouse: true
                 onTextChanged: password = text
             }
 

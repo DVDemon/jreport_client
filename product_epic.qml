@@ -22,7 +22,7 @@ Page {
         Rectangle{
             width: page_id.width
             height: main_row.implicitHeight+control_spacing*2
-            color: (name==selected_product)?(saved?"darkgreen":"darkgray"):"transparent"
+            color: (name==selected_product)?(saved?"lightgreen":"darkgray"):"transparent"
 
             border{
                 width: 1
@@ -34,6 +34,7 @@ Page {
                 onClicked: {
                     saved = false
                     selected_product = name
+
                 }
             }
 
@@ -65,6 +66,75 @@ Page {
                     wrapMode: Text.WrapAnywhere
                 }
 
+
+                Rectangle{
+                    width: id_button.implicitWidth+control_spacing*2
+                    height: id_button.implicitHeight+control_spacing*2
+                    visible: (selected_product===name)
+                    color: "transparent"
+                    radius: control_spacing
+
+                    border{
+                        width: 1
+                        color: "lightgray"
+                    }
+
+                    Text {
+                        id:id_button
+                        x:control_spacing
+                        y:control_spacing
+                        text: "Select Epic >>"
+                        color: font_color
+                        font.family: "Hack"
+                        font.bold: true
+                        font.pointSize: font_size
+                        wrapMode: Text.WrapAnywhere
+                    }
+
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                            stack_view_push("epic.qml")
+                        }
+                    }
+
+                }
+
+                Rectangle{
+                    width: id_button2.implicitWidth+control_spacing*2
+                    height: id_button2.implicitHeight+control_spacing*2
+                    visible: (selected_product===name)
+                    color: "transparent"
+                    radius: control_spacing
+
+                    border{
+                        width: 1
+                        color: "lightgray"
+                    }
+
+                    Text {
+                        id:id_button2
+                        x:control_spacing
+                        y:control_spacing
+                        text: "Comment >>"
+                        color: font_color
+                        font.family: "Hack"
+                        font.bold: true
+                        font.pointSize: font_size
+                        wrapMode: Text.WrapAnywhere
+                    }
+
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                            stack_view_push("comments.qml")
+                        }
+                    }
+
+
+
+                }
+
             }
 
         }
@@ -74,46 +144,8 @@ Page {
     Column{
         width: parent.width
         height: parent.height
+        y:control_spacing
 
-        Row{
-            x:control_spacing
-            y:control_spacing
-            id: control_row_id
-            width: parent.width
-            height: id_button.height+control_spacing*2
-            Rectangle{
-                width: id_button.implicitWidth+control_spacing*2
-                height: id_button.implicitHeight+control_spacing*2
-                visible: (selected_product!=='')
-                color: "transparent"
-                radius: control_spacing
-
-                border{
-                    width: 1
-                    color: "lightgray"
-                }
-
-                Text {
-                    id:id_button
-                    x:control_spacing
-                    y:control_spacing
-                    text: "Select Epic >>"
-                    color: font_color
-                    font.family: "Hack"
-                    font.bold: true
-                    font.pointSize: font_size
-                    wrapMode: Text.WrapAnywhere
-                }
-
-                MouseArea{
-                    anchors.fill: parent
-                    onClicked: {
-                        stack_view_push("epic.qml")
-                    }
-                }
-
-            }
-        }
         Rectangle{
             width: control_spacing
             height: control_spacing
@@ -123,7 +155,7 @@ Page {
         Flickable{
 
             width:page_id.width
-            height:page_id.height-control_row_id.height-control_spacing*2
+            height:page_id.height-control_spacing*2
             contentWidth: page_id.width
             contentHeight: id_column_lists.height
             boundsBehavior: Flickable.StopAtBounds
@@ -176,13 +208,12 @@ Page {
         uri += 'cluster='+encodeURIComponent(selected_cluster);
         uri += '&cluster_issue='+encodeURIComponent(selected_initiative_epic);
 
-        console.log(uri);
         request.open('GET', uri, true);
         request.setRequestHeader("Authorization", identity);
         request.onreadystatechange = function() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status && request.status === 200) {
-                    //console.log("response", request.responseText)
+                    console.log("response", request.responseText)
                     var result = JSON.parse(request.responseText)
                     var length = result.length;
 

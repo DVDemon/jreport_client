@@ -56,5 +56,6 @@
         <file>epic.qml</file>
         <file>login.qml</file>
         <file>main.qml</file>
+        <file>comments.qml</file>
     </qresource>
 </RCC>

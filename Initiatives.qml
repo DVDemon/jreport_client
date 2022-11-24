@@ -55,7 +55,7 @@ Page {
                     text: name
                     color: font_color
                     font.family: "Hack"
-                    font.bold: true
+                    font.bold: false
                     font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                 }
@@ -150,7 +150,7 @@ Page {
                     text: name
                     color: font_color
                     font.family: "Hack"
-                    font.bold: true
+                    font.bold: false
                     font.pointSize: font_size
                     wrapMode: Text.WrapAnywhere
                 }
