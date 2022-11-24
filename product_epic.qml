@@ -9,7 +9,7 @@ Page {
 
     Rectangle{
         anchors.fill: parent
-        color: backgroud_color
+        color: background_color
     }
 
 

@@ -77,7 +77,7 @@ Page {
                 Text {
                     id: id_name
                     text: name
-                    color: "white"
+                    color: font_colors
                     font.family: "Hack"
                     font.bold: false
                     font.pointSize: font_size

@@ -223,18 +223,28 @@ Page {
     }
 
     function setClusterInitiativeEpic(){
-
+        console.log("cluster initative issue");
         var xhr = new XMLHttpRequest();
         xhr.open("POST", host+'/cluster_initative_epic', true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         xhr.setRequestHeader("Authorization", identity);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status && xhr.status === 200) {
+                    console.log("response", xhr.responseText)
+                    saved = true;
+                } else {
+                    console.log("HTTP:", xhr.status, xhr.statusText)
+                }
+            }
+
+        }
         xhr.send(JSON.stringify({
                                     cluster: selected_cluster,
                                     initiative: selected_initiative,
                                     initiative_issue: selected_initiative_epic,
                                     issue: selected_issue
                                 }));
-        saved = true;
     }
 
     function getClusterInitiativeEpic() {
