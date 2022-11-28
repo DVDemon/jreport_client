@@ -201,7 +201,7 @@ Page {
 
     function getProductEpic(product_issue) {
         var request = new XMLHttpRequest()
-        var uri = host+'/product_initative_epic?';
+        var uri = host+'/product_initative_issue?';
         uri += 'product_issue='+encodeURIComponent(product_issue);
         uri += '&cluster_issue='+encodeURIComponent(selected_initiative_epic);
 
