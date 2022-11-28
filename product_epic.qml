@@ -202,31 +202,35 @@ Page {
 
 
     function getProductsJSON() {
-        var request = new XMLHttpRequest()
+        var done = false
+        while(!done){
+            var request = new XMLHttpRequest()
 
-        var uri = host+'/products?';
-        uri += 'cluster='+encodeURIComponent(selected_cluster);
-        uri += '&cluster_issue='+encodeURIComponent(selected_initiative_epic);
+            var uri = host+'/products?';
+            uri += 'cluster='+encodeURIComponent(selected_cluster);
+            uri += '&cluster_issue='+encodeURIComponent(selected_initiative_epic);
 
-        request.open('GET', uri, true);
-        request.setRequestHeader("Authorization", identity);
-        request.onreadystatechange = function() {
-            if (request.readyState === XMLHttpRequest.DONE) {
-                if (request.status && request.status === 200) {
-                    console.log("response", request.responseText)
-                    var result = JSON.parse(request.responseText)
-                    var length = result.length;
+            request.open('GET', uri, false);
+            request.setRequestHeader("Authorization", identity);
+            request.onreadystatechange = function() {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status && request.status === 200) {
+                        console.log("response", request.responseText)
+                        var result = JSON.parse(request.responseText)
+                        var length = result.length;
 
-                    for (var i = 0; i < length; i++){
-                        product_model.append({"name":result[i].name,"issue":result[i].issue})
+                        for (var i = 0; i < length; i++){
+                            product_model.append({"name":result[i].name,"issue":result[i].issue})
+                        }
+                        done = true;
+
+                    } else {
+                        console.log("HTTP:", request.status, request.statusText)
                     }
-
-                } else {
-                    console.log("HTTP:", request.status, request.statusText)
                 }
-            }
 
+            }
+            request.send()
         }
-        request.send()
     }
 }

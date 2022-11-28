@@ -224,84 +224,99 @@ Page {
     }
 
     function setClusterInitiativeEpic(){
-        console.log("cluster initative issue");
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", host+'/cluster_initative_epic', true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        xhr.setRequestHeader("Authorization", identity);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status && xhr.status === 200) {
-                    console.log("response", xhr.responseText)
-                    saved = true;
-                } else {
-                    console.log("HTTP:", xhr.status, xhr.statusText)
+        var done = false
+        while(!done){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", host+'/cluster_initative_epic', false);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            xhr.setRequestHeader("Authorization", identity);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status && xhr.status === 200) {
+                        console.log("response", xhr.responseText)
+                        saved = true;
+                        done = true;
+                    } else {
+                        console.log("HTTP:", xhr.status, xhr.statusText)
+                    }
                 }
-            }
 
+            }
+            xhr.send(JSON.stringify({
+                                        cluster: selected_cluster,
+                                        initiative: selected_initiative,
+                                        initiative_issue: selected_initiative_epic,
+                                        issue: selected_issue
+                                    }));
         }
-        xhr.send(JSON.stringify({
-                                    cluster: selected_cluster,
-                                    initiative: selected_initiative,
-                                    initiative_issue: selected_initiative_epic,
-                                    issue: selected_issue
-                                }));
     }
 
     function getClusterInitiativeEpic() {
-        var request = new XMLHttpRequest()
+
         selected_issue =""
         var uri = host+'/cluster_initative_epic?';
         uri += 'cluster='+encodeURIComponent(selected_cluster);
         uri += '&initiative='+encodeURIComponent(selected_initiative);
         uri += '&initiative_issue='+encodeURIComponent(selected_initiative_epic);
 
-        request.open('GET', uri, true);
-        request.setRequestHeader("Authorization", identity);
-        request.onreadystatechange = function() {
-            if (request.readyState === XMLHttpRequest.DONE) {
-                if (request.status && request.status === 200) {
-                    console.log("response", request.responseText)
-                    var result = JSON.parse(request.responseText)
-                    selected_issue = result.issue;
-                    saved = true;
-                } else {
-                    console.log("HTTP:", request.status, request.statusText)
-                }
-            }
+        var done = false
+        while(!done){
 
+            var request = new XMLHttpRequest()
+
+            request.open('GET', uri, false);
+            request.setRequestHeader("Authorization", identity);
+            request.onreadystatechange = function() {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status && request.status === 200) {
+                        console.log("response", request.responseText)
+                        var result = JSON.parse(request.responseText)
+                        selected_issue = result.issue;
+                        saved = true;
+                        done = true;
+                    } else {
+                        console.log("HTTP:", request.status, request.statusText)
+                    }
+                }
+
+            }
+            request.send()
         }
-        request.send()
     }
 
     function getIssuesJSON() {
-        var request = new XMLHttpRequest()
+        var done = false
+        while(!done){
+            var request = new XMLHttpRequest()
 
-        request.open('GET', host+'/issue/'+selected_initiative_epic, true);
-        request.setRequestHeader("Authorization", identity);
-        request.onreadystatechange = function() {
-            if (request.readyState === XMLHttpRequest.DONE) {
-                if (request.status && request.status === 200) {
-                    //console.log("response", request.responseText)
-                    var result = JSON.parse(request.responseText)
-                    var links  = result.links;
-                    var length = links.length;
-                    id_issue_title_1.text = result.key+": "+result.name
-                    for (var i = 0; i < length; i++){
-                        var element= links[i]
+            request.open('GET', host+'/issue/'+selected_initiative_epic, false);
+            request.setRequestHeader("Authorization", identity);
+            request.onreadystatechange = function() {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status && request.status === 200) {
+                        //console.log("response", request.responseText)
+                        var result = JSON.parse(request.responseText)
+                        var links  = result.links;
+                        var length = links.length;
+                        id_issue_title_1.text = result.key+": "+result.name
+                        for (var i = 0; i < length; i++){
+                            var element= links[i]
 
-                        if(element.type==="parent of"){
-                            issue1_model.append({"key": element.issue.key,
-                                                    "name":element.issue.name})
+                            if(element.type==="parent of"){
+                                issue1_model.append({"key": element.issue.key,
+                                                        "name":element.issue.name})
+                            }
                         }
-                    }
-                    getClusterInitiativeEpic();
-                } else {
-                    console.log("HTTP:", request.status, request.statusText)
-                }
-            }
+                        done = true;
 
+                    } else {
+                        console.log("HTTP:", request.status, request.statusText)
+                    }
+                }
+
+            }
+            request.send()
         }
-        request.send()
+        getClusterInitiativeEpic();
     }
 }

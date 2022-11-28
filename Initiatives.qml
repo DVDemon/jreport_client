@@ -381,52 +381,60 @@ Page {
 
 
     function getInitiativesJSON() {
-        var request = new XMLHttpRequest()
-        request.open('GET', host+'/initiatives', true);
-        request.setRequestHeader("Authorization", identity);
-        request.onreadystatechange = function() {
-            if (request.readyState === XMLHttpRequest.DONE) {
-                if (request.status && request.status === 200) {
-                    var result = JSON.parse(request.responseText)
-                    var length = result.length;
-                    for (var i = 0; i < length; i++){
-                        var msg= result[i]
-                        var initiatives = msg.initiatives
-                        var issues =["","",""]
-                        for(var j=0; j< initiatives.length;j++)
-                            issues[j] = initiatives[j]
+        var done = false
+        while(!done){
+            var request = new XMLHttpRequest()
+            request.open('GET', host+'/initiatives', false);
+            request.setRequestHeader("Authorization", identity);
+            request.onreadystatechange = function() {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status && request.status === 200) {
+                        var result = JSON.parse(request.responseText)
+                        var length = result.length;
+                        for (var i = 0; i < length; i++){
+                            var msg= result[i]
+                            var initiatives = msg.initiatives
+                            var issues =["","",""]
+                            for(var j=0; j< initiatives.length;j++)
+                                issues[j] = initiatives[j]
 
-                        initiatives_model.append({"name": msg.name,
-                                                     "issue1":issues[0],
-                                                     "issue2":issues[1],
-                                                     "issue3":issues[2]})
+                            initiatives_model.append({"name": msg.name,
+                                                         "issue1":issues[0],
+                                                         "issue2":issues[1],
+                                                         "issue3":issues[2]})
+                        }
+                        done = trues
+                    } else {
+                        console.log("HTTP:", request.status, request.statusText)
                     }
-                } else {
-                    console.log("HTTP:", request.status, request.statusText)
                 }
             }
+            request.send()
         }
-        request.send()
     }
 
     function getClustersJSON() {
-        var request = new XMLHttpRequest()
-        request.open('GET', host+'/clusters', true);
-        request.setRequestHeader("Authorization", identity);
-        request.onreadystatechange = function() {
-            if (request.readyState === XMLHttpRequest.DONE) {
-                if (request.status && request.status === 200) {
-                    var result = JSON.parse(request.responseText)
-                    var length = result.length;
-                    for (var i = 0; i < length; i++){
-                        var msg= result[i]
-                        clusters_model.append({"name": msg})
+        var done = false
+        while(!done){
+            var request = new XMLHttpRequest()
+            request.open('GET', host+'/clusters', false);
+            request.setRequestHeader("Authorization", identity);
+            request.onreadystatechange = function() {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status && request.status === 200) {
+                        var result = JSON.parse(request.responseText)
+                        var length = result.length;
+                        for (var i = 0; i < length; i++){
+                            var msg= result[i]
+                            clusters_model.append({"name": msg})
+                        }
+                        done = true;
+                    } else {
+                        console.log("HTTP:", request.status, request.statusText)
                     }
-                } else {
-                    console.log("HTTP:", request.status, request.statusText)
                 }
             }
+            request.send()
         }
-        request.send()
     }
 }

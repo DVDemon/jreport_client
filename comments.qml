@@ -165,30 +165,33 @@ Page {
     }
 
     function getCommentsJSON() {
-        var request = new XMLHttpRequest()
+        var done = false;
+        while(!done){
+            var request = new XMLHttpRequest()
 
-        var uri = host+'/comments?';
-        uri += 'cluster_issue='+encodeURIComponent(selected_initiative_epic);
-        uri += '&product='+encodeURIComponent(selected_product);
+            var uri = host+'/comments?';
+            uri += 'cluster_issue='+encodeURIComponent(selected_initiative_epic);
+            uri += '&product='+encodeURIComponent(selected_product);
 
-        request.open('GET', uri, true);
-        request.setRequestHeader("Authorization", identity);
-        request.onreadystatechange = function() {
-            if (request.readyState === XMLHttpRequest.DONE) {
-                if (request.status && request.status === 200) {
+            request.open('GET', uri, false);
+            request.setRequestHeader("Authorization", identity);
+            request.onreadystatechange = function() {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status && request.status === 200) {
 
-                    var result = JSON.parse(request.responseText)
+                        var result = JSON.parse(request.responseText)
 
-                    product_report_address = result.address;
-                    product_comment = result.comment;
-
-                } else {
-                    console.log("HTTP:", request.status, request.statusText)
+                        product_report_address = result.address;
+                        product_comment = result.comment;
+                        done = true
+                    } else {
+                        console.log("HTTP:", request.status, request.statusText)
+                    }
                 }
-            }
 
+            }
+            request.send()
         }
-        request.send()
     }
 
 }

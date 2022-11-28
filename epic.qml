@@ -77,11 +77,7 @@ Page {
                 Text {
                     id: id_name
                     text: name
-<<<<<<< HEAD
-                    color: font_colors
-=======
                     color: font_color
->>>>>>> 362d5792e5219e97940dfbe98d67c3c7e80ccf6e
                     font.family: "Hack"
                     font.bold: false
                     font.pointSize: font_size
@@ -226,55 +222,68 @@ Page {
 
     function setProductEpic(){
         console.log("set product initiative issue");
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", host+'/product_initative_issue', true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        xhr.setRequestHeader("Authorization", identity);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status && xhr.status === 200) {
+        var done = false
+        while(!done){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", host+'/product_initative_issue', false);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            xhr.setRequestHeader("Authorization", identity);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status && xhr.status === 200) {
 
-                    stackView.pop();
-                } else {
-                    console.log("HTTP:", xhr.status, xhr.statusText)
+                        stackView.pop();
+                        done = true;
+                        saved = true;
+                    } else {
+                        console.log("HTTP:", xhr.status, xhr.statusText)
+                    }
                 }
-            }
 
+            }
+            xhr.send(JSON.stringify({
+                                        product: selected_product,
+                                        cluster_issue: selected_initiative_epic,
+                                        product_issue: selected_product_issue
+                                    }));
         }
-        xhr.send(JSON.stringify({
-                                    product: selected_product,
-                                    cluster_issue: selected_initiative_epic,
-                                    product_issue: selected_product_issue
-                                }));
-        saved = true;
+
+
     }
 
     function getIssuesJSON() {
-        var request = new XMLHttpRequest()
+
 
         console.log("loading issue: "+selected_issue);
-        request.open('GET', host+'/issue/'+selected_issue, true);
-        request.setRequestHeader("Authorization", identity);
-        request.onreadystatechange = function() {
-            if (request.readyState === XMLHttpRequest.DONE) {
-                if (request.status && request.status === 200) {
-                    //console.log("response", request.responseText)
-                    var result = JSON.parse(request.responseText)
-                    var links  = result.links;
-                    var length = links.length;
-                    for (var i = 0; i < length; i++){
-                        var element= links[i]
+        var done = false
+        while(!done){
+            var request = new XMLHttpRequest()
 
-                        if(element.type==="parent of"){
-                            issue1_model.append({"key": element.issue.key,
-                                                    "name":element.issue.name})
+
+            request.open('GET', host+'/issue/'+selected_issue, false);
+            request.setRequestHeader("Authorization", identity);
+            request.onreadystatechange = function() {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status && request.status === 200) {
+                        //console.log("response", request.responseText)
+                        var result = JSON.parse(request.responseText)
+                        var links  = result.links;
+                        var length = links.length;
+                        for (var i = 0; i < length; i++){
+                            var element= links[i]
+
+                            if(element.type==="parent of"){
+                                issue1_model.append({"key": element.issue.key,
+                                                        "name":element.issue.name})
+                            }
                         }
+                        done = true;
+                    } else {
+                        console.log("HTTP:", request.status, request.statusText)
                     }
-                } else {
-                    console.log("HTTP:", request.status, request.statusText)
                 }
-            }
 
+            }
         }
         request.send()
     }
