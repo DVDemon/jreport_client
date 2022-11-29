@@ -6,6 +6,7 @@
 #include <QQuickWindow>
 #include <QSGRendererInterface>
 
+#include "downloader.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +24,11 @@ int main(int argc, char *argv[])
     QFontDatabase::addApplicationFont(":/fonts/Hack-BoldItalic.ttf");
     QFontDatabase::addApplicationFont(":/fonts/Hack-Italic.ttf");
     QFontDatabase::addApplicationFont(":/fonts/Hack-Regular.ttf");
+
+    Downloader down1,down2;
+    engine.rootContext()->setContextProperty("Downloader1",&down1);
+    engine.rootContext()->setContextProperty("Downloader2",&down2);
+
 
     const QUrl url("qrc:/main.qml");
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

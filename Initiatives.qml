@@ -370,9 +370,65 @@ Page {
         }
     }
 
+    Connections{
+            target: Downloader1
+            function onLoaded(response){
+                console.log("downloader1 loaded")
+                if(response)
+                {
+                    var result = JSON.parse(response)
+                    var length = result.length;
+                    for (var i = 0; i < length; i++){
+                        var msg= result[i]
+                        var initiatives = msg.initiatives
+                        var issues =["","",""]
+                        for(var j=0; j< initiatives.length;j++)
+                            issues[j] = initiatives[j]
+
+                        initiatives_model.append({"name": msg.name,
+                                                     "issue1":issues[0],
+                                                     "issue2":issues[1],
+                                                     "issue3":issues[2]})
+                    }
+                }
+            }
+
+            function onConnection_error(){
+                console.log("downloader1 connection error")
+            }
+
+            function onAuthorization_error(){
+                console.log("downloader1 authorization error");
+            }
+        }
+
+    Connections{
+            target: Downloader2
+            function onLoaded(response){
+                console.log("downloader2 loaded")
+                if(response)
+                {
+                    var result = JSON.parse(response)
+                    var length = result.length;
+                    for (var i = 0; i < length; i++){
+                        var msg= result[i]
+                        clusters_model.append({"name": msg})
+                    }
+                }
+            }
+
+            function onConnection_error(){
+                console.log("downloader2 connection error")
+            }
+
+            function onAuthorization_error(){
+                console.log("downloader2 authorization error");
+            }
+        }
+
     Component.onCompleted: {
-        getInitiativesJSON()
-        getClustersJSON()
+        Downloader1.get(host+'/initiatives',identity)
+        Downloader2.get(host+'/clusters',identity)
     }
 
     function init(){
@@ -380,61 +436,5 @@ Page {
     }
 
 
-    function getInitiativesJSON() {
-        var done = false
-        while(!done){
-            var request = new XMLHttpRequest()
-            request.open('GET', host+'/initiatives', false);
-            request.setRequestHeader("Authorization", identity);
-            request.onreadystatechange = function() {
-                if (request.readyState === XMLHttpRequest.DONE) {
-                    if (request.status && request.status === 200) {
-                        var result = JSON.parse(request.responseText)
-                        var length = result.length;
-                        for (var i = 0; i < length; i++){
-                            var msg= result[i]
-                            var initiatives = msg.initiatives
-                            var issues =["","",""]
-                            for(var j=0; j< initiatives.length;j++)
-                                issues[j] = initiatives[j]
 
-                            initiatives_model.append({"name": msg.name,
-                                                         "issue1":issues[0],
-                                                         "issue2":issues[1],
-                                                         "issue3":issues[2]})
-                        }
-                        done = trues
-                    } else {
-                        console.log("HTTP:", request.status, request.statusText)
-                    }
-                }
-            }
-            request.send()
-        }
-    }
-
-    function getClustersJSON() {
-        var done = false
-        while(!done){
-            var request = new XMLHttpRequest()
-            request.open('GET', host+'/clusters', false);
-            request.setRequestHeader("Authorization", identity);
-            request.onreadystatechange = function() {
-                if (request.readyState === XMLHttpRequest.DONE) {
-                    if (request.status && request.status === 200) {
-                        var result = JSON.parse(request.responseText)
-                        var length = result.length;
-                        for (var i = 0; i < length; i++){
-                            var msg= result[i]
-                            clusters_model.append({"name": msg})
-                        }
-                        done = true;
-                    } else {
-                        console.log("HTTP:", request.status, request.statusText)
-                    }
-                }
-            }
-            request.send()
-        }
-    }
 }
