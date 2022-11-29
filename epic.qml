@@ -65,7 +65,7 @@ Page {
 
                 Text {
                     id: id_product_epic
-                    text: getProductEpic(key)
+                    text: product_name
                     color: font_color
                     font.family: "Hack"
                     font.bold: false
@@ -76,7 +76,7 @@ Page {
 
                 Text {
                     id: id_name
-                    text: name
+                    text: issue_name
                     color: font_color
                     font.family: "Hack"
                     font.bold: false
@@ -187,42 +187,67 @@ Page {
     }
 
     Component.onCompleted: {
-        getIssuesJSON()
+        init()
     }
 
     function init(){
-
+        Downloader7.get(host+'/issues_with_products/'+selected_issue+"?initiative_epic="+selected_initiative_epic,identity)
     }
 
+    Connections{
+            target: Downloader7
+            function onLoaded(response){
+                console.log("downloader7 loaded")
+                if(response){
+                    issue1_model.clear()
+                    var result = JSON.parse(response)
+                    var length = result.length;
 
-    function getProductEpic(product_issue) {
-        var request = new XMLHttpRequest()
-        var uri = host+'/product_initative_issue?';
-        uri += 'product_issue='+encodeURIComponent(product_issue);
-        uri += '&cluster_issue='+encodeURIComponent(selected_initiative_epic);
-
-        var result_issue = ""
-        request.open('GET', uri, false);
-        request.setRequestHeader("Authorization", identity);
-        request.onreadystatechange = function() {
-            if (request.readyState === XMLHttpRequest.DONE) {
-                if (request.status && request.status === 200) {
-                    var result = JSON.parse(request.responseText)
-                    result_issue = result.issue;
-                } else {
-                    console.log("HTTP:", request.status, request.statusText)
-
+                    for (var i = 0; i < length; i++){
+                        var element =result[i]
+                        issue1_model.append({"key":element.product_issue,"product_name":element.product_name,"issue_name":element.product_issue_name})
+                    }
                 }
             }
 
+            function onConnection_error(){
+                console.log("downloader7 connection error")
+            }
+
+            function onAuthorization_error(){
+                console.log("downloader7 authorization error");
+            }
         }
-        request.send()
-        return result_issue;
-    }
+    Connections{
+            target: Downloader9
+            function onLoaded(response){
+                console.log("downloader9 loaded")
+                if(response){
+                    saved = true;
+                    stackView.pop();
+                    stackView.currentItem.init();
+                }
+            }
+
+            function onConnection_error(){
+                console.log("downloader9 connection error")
+            }
+
+            function onAuthorization_error(){
+                console.log("downloader9 authorization error");
+            }
+        }
+
 
     function setProductEpic(){
         console.log("set product initiative issue");
-        var done = false
+        var val = JSON.stringify({
+                                     product: selected_product,
+                                     cluster_issue: selected_initiative_epic,
+                                     product_issue: selected_product_issue
+                                 });
+        Downloader9.post(host+'/product_initative_issue',identity,val)
+        /*var done = false
         while(!done){
             var xhr = new XMLHttpRequest();
             xhr.open("POST", host+'/product_initative_issue', false);
@@ -246,7 +271,7 @@ Page {
                                         cluster_issue: selected_initiative_epic,
                                         product_issue: selected_product_issue
                                     }));
-        }
+        }*/
 
 
     }

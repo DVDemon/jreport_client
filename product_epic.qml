@@ -192,45 +192,39 @@ Page {
 
     }
     Component.onCompleted: {
-        getProductsJSON()
+        init()
     }
 
-    function init(){
-        product_model.clear()
-        getProductsJSON()
-    }
+    Connections{
+            target: Downloader6
+            function onLoaded(response){
+                console.log("downloader6 loaded")
+                if(response){
+                    product_model.clear()
+                    var result = JSON.parse(response)
+                    var length = result.length;
 
-
-    function getProductsJSON() {
-        var done = false
-        while(!done){
-            var request = new XMLHttpRequest()
-
-            var uri = host+'/products?';
-            uri += 'cluster='+encodeURIComponent(selected_cluster);
-            uri += '&cluster_issue='+encodeURIComponent(selected_initiative_epic);
-
-            request.open('GET', uri, false);
-            request.setRequestHeader("Authorization", identity);
-            request.onreadystatechange = function() {
-                if (request.readyState === XMLHttpRequest.DONE) {
-                    if (request.status && request.status === 200) {
-                        console.log("response", request.responseText)
-                        var result = JSON.parse(request.responseText)
-                        var length = result.length;
-
-                        for (var i = 0; i < length; i++){
-                            product_model.append({"name":result[i].name,"issue":result[i].issue})
-                        }
-                        done = true;
-
-                    } else {
-                        console.log("HTTP:", request.status, request.statusText)
+                    for (var i = 0; i < length; i++){
+                        product_model.append({"name":result[i].name,"issue":result[i].issue})
                     }
                 }
-
             }
-            request.send()
+
+            function onConnection_error(){
+                console.log("downloader6 connection error")
+            }
+
+            function onAuthorization_error(){
+                console.log("downloader6 authorization error");
+            }
         }
+
+    function init(){
+
+        var uri = host+'/products?';
+        uri += 'cluster='+encodeURIComponent(selected_cluster);
+        uri += '&cluster_issue='+encodeURIComponent(selected_initiative_epic);
+        Downloader6.get(uri,identity)
     }
+
 }

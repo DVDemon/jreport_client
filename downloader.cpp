@@ -51,5 +51,7 @@ void Downloader::post(QString url,QString identity,QString json){
     _authoriation_attempt = 0;
     _request = std::shared_ptr<QNetworkRequest>(new QNetworkRequest(QUrl(url)));
     _request->setRawHeader("Authorization", identity.toUtf8());
+     _request->setRawHeader("Content-Type", QString("application/x-www-form-urlencoded").toUtf8());
+
     manager.post(*_request,array);
 }

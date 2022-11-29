@@ -8,6 +8,7 @@
 #include <QXmlStreamReader>
 #include <QNetworkReply>
 #include <QAuthenticator>
+#include <memory>
 
 class Downloader : public QObject
 {
