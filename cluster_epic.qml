@@ -217,8 +217,9 @@ Page {
 
     Connections{
             target: Downloader3
-            function onLoaded(response){
+            onLoaded : {
                 console.log("downloader3 loaded")
+                var response = parameter
                 if(response)
                 {
                     var result = JSON.parse(response)
@@ -243,19 +244,20 @@ Page {
                 }
             }
 
-            function onConnection_error(){
+            onConnection_error:{
                 console.log("downloader3 connection error")
             }
 
-            function onAuthorization_error(){
+            onAuthorization_error:{
                 console.log("downloader3 authorization error");
             }
         }
 
     Connections{
             target: Downloader4
-            function onLoaded(response){
+            onLoaded:{
                 console.log("downloader4 loaded")
+                var response = parameter
                 if(response)
                 {
                     var result = JSON.parse(response)
@@ -263,26 +265,27 @@ Page {
                 }
             }
 
-            function onConnection_error(){
+            onConnection_error:{
                 console.log("downloader4 connection error")
             }
 
-            function onAuthorization_error(){
+            onAuthorization_error:{
                 console.log("downloader4 authorization error");
             }
         }
     Connections{
             target: Downloader5
-            function onLoaded(response){
+            onLoaded:{
+                var response = parameter
                 console.log("downloader5 loaded")
                 saved = true
             }
 
-            function onConnection_error(){
+            onConnection_error:{
                 console.log("downloader4 connection error")
             }
 
-            function onAuthorization_error(){
+            onAuthorization_error:{
                 console.log("downloader4 authorization error");
             }
         }

@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     QFontDatabase::addApplicationFont(":/fonts/Hack-Italic.ttf");
     QFontDatabase::addApplicationFont(":/fonts/Hack-Regular.ttf");
 
-    Downloader down1,down2,down3,down4,down5,down6,down7,down8,down9;
+    Downloader down1,down2,down3,down4,down5,down6,down7,down8,down9,down10;
     engine.rootContext()->setContextProperty("Downloader1",&down1);
     engine.rootContext()->setContextProperty("Downloader2",&down2);
     engine.rootContext()->setContextProperty("Downloader3",&down3);
@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("Downloader7",&down7);
     engine.rootContext()->setContextProperty("Downloader8",&down8);
     engine.rootContext()->setContextProperty("Downloader9",&down9);
+    engine.rootContext()->setContextProperty("Downloader10",&down10);
 
     const QUrl url("qrc:/main.qml");
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

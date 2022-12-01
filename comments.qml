@@ -133,65 +133,68 @@ Page {
     function init(){
         product_report_address = "";
         product_comment = "";
-        getCommentsJSON();
+        var uri = host+'/comments?';
+        uri += 'cluster_issue='+encodeURIComponent(selected_initiative_epic);
+        uri += '&product='+encodeURIComponent(selected_product);
+        Downloader10.get(uri,identity);
     }
+
+    Connections{
+            target: Downloader9
+            onLoaded:{
+                console.log("downloader9 loaded")
+                var response = parameter
+                if(response){
+                    stackView.pop();
+                    stackView.currentItem.init();
+                }
+            }
+
+            onConnection_error:{
+                console.log("downloader9 connection error")
+            }
+
+            onAuthorization_error:{
+                console.log("downloader9 authorization error");
+            }
+        }
+
+    Connections{
+            target: Downloader10
+            onLoaded:{
+                console.log("downloader10 loaded")
+                var response = parameter
+                if(response){
+                    var result = JSON.parse(response)
+
+                    product_report_address = result.address;
+                    product_comment = result.comment;
+                }
+            }
+
+            onConnection_error:{
+                console.log("downloader10 connection error")
+            }
+
+             onAuthorization_error:{
+                console.log("downloader10 authorization error");
+            }
+        }
+
 
     function setCommentsJSON(){
-
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", host+'/comments', true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        xhr.setRequestHeader("Authorization", identity);
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status && xhr.status === 200) {
-
-                    stackView.pop();
-                } else {
-                    console.log("HTTP:", xhr.status, xhr.statusText)
-                }
-            }
-
-        }
-
-        xhr.send(JSON.stringify({
-                                    product: selected_product,
-                                    cluster_issue: selected_initiative_epic,
-                                    comment: product_comment,
-                                    address: product_report_address
-                                }));
+        console.log("set product comments");
+        var val = JSON.stringify({
+                                     product: selected_product,
+                                     cluster_issue: selected_initiative_epic,
+                                     comment: product_comment,
+                                     address: product_report_address
+                                 });
+        Downloader9.post(host+'/comments',identity,val)
     }
 
-    function getCommentsJSON() {
-        var done = false;
-        while(!done){
-            var request = new XMLHttpRequest()
 
-            var uri = host+'/comments?';
-            uri += 'cluster_issue='+encodeURIComponent(selected_initiative_epic);
-            uri += '&product='+encodeURIComponent(selected_product);
 
-            request.open('GET', uri, false);
-            request.setRequestHeader("Authorization", identity);
-            request.onreadystatechange = function() {
-                if (request.readyState === XMLHttpRequest.DONE) {
-                    if (request.status && request.status === 200) {
 
-                        var result = JSON.parse(request.responseText)
-
-                        product_report_address = result.address;
-                        product_comment = result.comment;
-                        done = true
-                    } else {
-                        console.log("HTTP:", request.status, request.statusText)
-                    }
-                }
-
-            }
-            request.send()
-        }
-    }
 
 }

@@ -196,8 +196,9 @@ Page {
 
     Connections{
             target: Downloader7
-            function onLoaded(response){
+            onLoaded:{
                 console.log("downloader7 loaded")
+                var response = parameter
                 if(response){
                     issue1_model.clear()
                     var result = JSON.parse(response)
@@ -210,18 +211,19 @@ Page {
                 }
             }
 
-            function onConnection_error(){
+            onConnection_error:{
                 console.log("downloader7 connection error")
             }
 
-            function onAuthorization_error(){
+             onAuthorization_error:{
                 console.log("downloader7 authorization error");
             }
         }
     Connections{
-            target: Downloader9
-            function onLoaded(response){
-                console.log("downloader9 loaded")
+            target: Downloader8
+            onLoaded:{
+                console.log("downloader8 loaded")
+                var response = parameter
                 if(response){
                     saved = true;
                     stackView.pop();
@@ -229,12 +231,12 @@ Page {
                 }
             }
 
-            function onConnection_error(){
-                console.log("downloader9 connection error")
+            onConnection_error:{
+                console.log("downloader8 connection error")
             }
 
-            function onAuthorization_error(){
-                console.log("downloader9 authorization error");
+            onAuthorization_error:{
+                console.log("downloader8 authorization error");
             }
         }
 
@@ -246,70 +248,7 @@ Page {
                                      cluster_issue: selected_initiative_epic,
                                      product_issue: selected_product_issue
                                  });
-        Downloader9.post(host+'/product_initative_issue',identity,val)
-        /*var done = false
-        while(!done){
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", host+'/product_initative_issue', false);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            xhr.setRequestHeader("Authorization", identity);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status && xhr.status === 200) {
-
-                        stackView.pop();
-                        done = true;
-                        saved = true;
-                    } else {
-                        console.log("HTTP:", xhr.status, xhr.statusText)
-                    }
-                }
-
-            }
-            xhr.send(JSON.stringify({
-                                        product: selected_product,
-                                        cluster_issue: selected_initiative_epic,
-                                        product_issue: selected_product_issue
-                                    }));
-        }*/
-
-
+        Downloader8.post(host+'/product_initative_issue',identity,val)
     }
 
-    function getIssuesJSON() {
-
-
-        console.log("loading issue: "+selected_issue);
-        var done = false
-        while(!done){
-            var request = new XMLHttpRequest()
-
-
-            request.open('GET', host+'/issue/'+selected_issue, false);
-            request.setRequestHeader("Authorization", identity);
-            request.onreadystatechange = function() {
-                if (request.readyState === XMLHttpRequest.DONE) {
-                    if (request.status && request.status === 200) {
-                        //console.log("response", request.responseText)
-                        var result = JSON.parse(request.responseText)
-                        var links  = result.links;
-                        var length = links.length;
-                        for (var i = 0; i < length; i++){
-                            var element= links[i]
-
-                            if(element.type==="parent of"){
-                                issue1_model.append({"key": element.issue.key,
-                                                        "name":element.issue.name})
-                            }
-                        }
-                        done = true;
-                    } else {
-                        console.log("HTTP:", request.status, request.statusText)
-                    }
-                }
-
-            }
-        }
-        request.send()
-    }
 }

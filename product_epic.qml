@@ -197,8 +197,10 @@ Page {
 
     Connections{
             target: Downloader6
-            function onLoaded(response){
+
+            onLoaded:{
                 console.log("downloader6 loaded")
+                var response = parameter
                 if(response){
                     product_model.clear()
                     var result = JSON.parse(response)
@@ -210,11 +212,11 @@ Page {
                 }
             }
 
-            function onConnection_error(){
+             onConnection_error:{
                 console.log("downloader6 connection error")
             }
 
-            function onAuthorization_error(){
+             onAuthorization_error:{
                 console.log("downloader6 authorization error");
             }
         }
