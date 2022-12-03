@@ -238,7 +238,6 @@ Page {
 
                     var uri = host+'/cluster_initative_epic?';
                     uri += 'cluster='+encodeURIComponent(selected_cluster);
-                    uri += '&initiative='+encodeURIComponent(selected_initiative);
                     uri += '&initiative_issue='+encodeURIComponent(selected_initiative_epic);
                     Downloader4.get(uri,identity)
                 }
